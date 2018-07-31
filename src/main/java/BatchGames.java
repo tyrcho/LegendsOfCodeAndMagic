@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class Main {
-  public static void main(String[] args) throws Exception {
+public class BatchGames {
+  public static void main(String[] args) {
 
     final Optional<Map<Integer, Integer>> totalScores = IntStream
       .range(0, 10)
-      .mapToObj(Main::playOnce)
-      .reduce(Main::mergeScores);
+      .mapToObj(BatchGames::playOnce)
+      .reduce(BatchGames::mergeScores);
+    System.out.println("submitted : 0, ide : 1");
     System.out.println(totalScores);
   }
 
@@ -36,7 +37,6 @@ public class Main {
       addSubmitted(gameRunner);
       final GameResult result = gameRunner.simulate();
       return swapScores(result.scores);
-
     }
   }
 
@@ -47,11 +47,11 @@ public class Main {
     return swapped;
   }
 
-  private static void addIde(final MultiplayerGameRunner gameRunner) {
+   static void addIde(final MultiplayerGameRunner gameRunner) {
     gameRunner.addAgent("scala.bat C:\\Users\\tyrcho\\git\\codingame-scala-kit\\target\\scala-2.12\\codingame-scala-kit_2.12-0.1.0.jar", "IDE", "no url");
   }
 
-  private static void addSubmitted(final MultiplayerGameRunner gameRunner) {
+   static void addSubmitted(final MultiplayerGameRunner gameRunner) {
     gameRunner.addAgent("scala.bat C:\\Users\\tyrcho\\git\\codingame-scala-kit\\submitted.jar", "submitted", "no url");
   }
 }
