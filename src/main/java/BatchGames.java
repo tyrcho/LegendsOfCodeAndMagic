@@ -1,14 +1,15 @@
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 import com.codingame.gameengine.runner.dto.GameResult;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+
 public class BatchGames {
   public static void main(String[] args) {
-
     final Optional<Map<Integer, Integer>> totalScores = IntStream
       .range(0, 10)
       .mapToObj(BatchGames::playOnce)
@@ -16,6 +17,8 @@ public class BatchGames {
     System.out.println("submitted : 0, ide : 1");
     System.out.println(totalScores);
   }
+
+
 
   private static Map<Integer, Integer> mergeScores(final Map<Integer, Integer> r, final Map<Integer, Integer> s) {
     final HashMap<Integer, Integer> merge = new HashMap<>();
@@ -47,11 +50,24 @@ public class BatchGames {
     return swapped;
   }
 
-   static void addIde(final MultiplayerGameRunner gameRunner) {
-    gameRunner.addAgent("scala.bat C:\\Users\\tyrcho\\git\\codingame-scala-kit\\target\\scala-2.12\\codingame-scala-kit_2.12-0.1.0.jar", "IDE", "no url");
+  static void addIde(final MultiplayerGameRunner gameRunner) {
+    addScalaAgent(gameRunner, "../codingame-scala-kit/target/scala-2.12/codingame-scala-kit_2.12-0.1.0.jar", "IDE");
   }
 
-   static void addSubmitted(final MultiplayerGameRunner gameRunner) {
-    gameRunner.addAgent("scala.bat C:\\Users\\tyrcho\\git\\codingame-scala-kit\\submitted.jar", "submitted", "no url");
+  static void addSubmitted(final MultiplayerGameRunner gameRunner) {
+    addScalaAgent(gameRunner, "../codingame-scala-kit/submitted.jar", "submitted");
+  }
+
+  private static void addScalaAgent(final MultiplayerGameRunner gameRunner, final String jarFile, final String nickname) {
+    final String commandLine = String.format("%s %s", scalaCommand(), new File(jarFile).getAbsolutePath());
+    System.out.println(commandLine);
+    gameRunner.addAgent(commandLine, nickname, null);
+  }
+
+  private static String scalaCommand() {
+    return System.getProperty("os.name").contains("Win")
+      ? "scala.bat"
+      : "scala";
+
   }
 }
