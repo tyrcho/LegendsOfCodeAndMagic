@@ -58,6 +58,7 @@ public class BatchGames {
 
     private static void addScalaAgent(final MultiplayerGameRunner gameRunner, final String jarFile, final String nickname) {
         final String commandLine = String.format("%s %s", scalaCommand(), new File(jarFile).getAbsolutePath());
+        System.out.println(commandLine);
         gameRunner.addAgent(commandLine, nickname, null);
     }
 

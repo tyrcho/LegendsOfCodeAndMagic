@@ -3,7 +3,7 @@ import com.codingame.gameengine.runner.MultiplayerGameRunner;
 import java.util.Random;
 
 public class SingleGame {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
     System.setProperty("league.level", "4");
     if ((new Random()).nextBoolean()) {
@@ -12,7 +12,7 @@ public class SingleGame {
     } else {
       BatchGames.addIde(gameRunner);
       BatchGames.addSubmitted(gameRunner);
-      gameRunner.start();
+      gameRunner.start(0);
     }
   }
 
