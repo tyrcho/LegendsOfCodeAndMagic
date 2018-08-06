@@ -1,7 +1,6 @@
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 import com.codingame.gameengine.runner.dto.GameResult;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -11,13 +10,12 @@ import java.util.stream.IntStream;
 public class BatchGames {
   public static void main(String[] args) {
     final Optional<Map<Integer, Integer>> totalScores = IntStream
-      .range(0, 10)
+      .range(0, 20)
       .mapToObj(BatchGames::playOnce)
       .reduce(BatchGames::mergeScores);
     System.out.println("submitted : 0, ide : 1");
     System.out.println(totalScores);
   }
-
 
 
   private static Map<Integer, Integer> mergeScores(final Map<Integer, Integer> r, final Map<Integer, Integer> s) {
@@ -32,12 +30,10 @@ public class BatchGames {
     MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
     System.setProperty("league.level", "4");
     if (i % 2 == 0) {
-      addSubmitted(gameRunner);
-      addIde(gameRunner);
+      PrepareAgent.addIdeLast(gameRunner);
       return gameRunner.simulate().scores;
     } else {
-      addIde(gameRunner);
-      addSubmitted(gameRunner);
+      PrepareAgent.addIdeFirst(gameRunner);
       final GameResult result = gameRunner.simulate();
       return swapScores(result.scores);
     }
@@ -50,24 +46,5 @@ public class BatchGames {
     return swapped;
   }
 
-  static void addIde(final MultiplayerGameRunner gameRunner) {
-    addScalaAgent(gameRunner, "../codingame-scala-kit/target/scala-2.12/codingame-scala-kit_2.12-0.1.0.jar", "IDE");
-  }
 
-  static void addSubmitted(final MultiplayerGameRunner gameRunner) {
-    addScalaAgent(gameRunner, "../codingame-scala-kit/submitted.jar", "submitted");
-  }
-
-  private static void addScalaAgent(final MultiplayerGameRunner gameRunner, final String jarFile, final String nickname) {
-    final String commandLine = String.format("%s %s", scalaCommand(), new File(jarFile).getAbsolutePath());
-    System.out.println(commandLine);
-    gameRunner.addAgent(commandLine, nickname, null);
-  }
-
-  private static String scalaCommand() {
-    return System.getProperty("os.name").contains("Win")
-      ? "scala.bat"
-      : "scala";
-
-  }
 }
