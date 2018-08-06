@@ -4,7 +4,7 @@ import java.io.File;
 
 
 class PrepareAgent {
-  private static final String opponent = "almostSilver";
+  private static final String opponent = "silver";
 
   static void addIdeFirst(final MultiplayerGameRunner gameRunner) {
    addIde(gameRunner);

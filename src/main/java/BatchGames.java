@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 public class BatchGames {
   public static void main(String[] args) {
     final Optional<Map<Integer, Integer>> totalScores = IntStream
-      .range(0, 20)
+      .range(0, 30)
       .mapToObj(BatchGames::playOnce)
       .reduce(BatchGames::mergeScores);
     System.out.println("submitted : 0, ide : 1");
